@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>王闪闪 · blink.wang</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f9faff 0%, #eef2fa 100%);
+            font-family: system-ui, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+        }
+
+        /* 主卡片容器: 自适应宽度，优雅居中 */
+        .home-container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.75);
+            backdrop-filter: blur(2px);
+            border-radius: 3rem;
+            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.2), 0 1px 2px rgba(0,0,0,0.05);
+            padding: 2rem 1.8rem 2.8rem;
+            transition: all 0.2s ease;
+        }
+
+        /* 头部标志区 */
+        .brand {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+        .logo-name {
+            font-size: clamp(2.2rem, 8vw, 3.5rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #1E2A5E, #2E3A6B);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+        .logo-domain {
+            font-size: clamp(0.9rem, 4vw, 1.2rem);
+            font-weight: 450;
+            color: #4a5b7a;
+            background: #e9edf4cc;
+            display: inline-block;
+            padding: 0.2rem 1rem;
+            border-radius: 60px;
+            margin-top: 0.5rem;
+            backdrop-filter: blur(2px);
+            letter-spacing: 0.3px;
+        }
+        /* 装饰细线 */
+        .brand::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: #b9c8ff;
+            margin: 1rem auto 0;
+            border-radius: 4px;
+            opacity: 0.6;
+        }
+
+        /* ========= 链接方块区域 ========= */
+        /* 网格布局：自动响应换行，居中放置，每个方块固定 64px */
+        .links-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.2rem 1.5rem;
+            margin: 2rem 0 2.5rem 0;
+        }
+        /* 方块容器: 64x64，完全可点，圆润现代 */
+        .link-block {
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(2px);
+            border-radius: 20px;
+            box-shadow: 0 8px 18px -6px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(156, 180, 215, 0.2);
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            color: #1f2a44;
+            cursor: pointer;
+        }
+        /* 方块内文字或icon字符，可放emoji或字母 */
+        .link-block span {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            font-weight: 500;
+        }
+        /* 鼠标/触摸悬停效果 */
+        .link-block:hover {
+            transform: translateY(-4px);
+            background: white;
+            box-shadow: 0 20px 28px -12px rgba(30, 42, 94, 0.25);
+            border-color: transparent;
+        }
+        .link-block:active {
+            transform: translateY(2px);
+            transition: 0.05s;
+        }
+
+        /* 可选: 文字小标签 (非必须但友好) 放在方块下方? 保持干净设计, 不加额外干扰，完全遵从64x64块 */
+        /* 但为了清晰标识每个链接，在方块内部用简洁emoji+数字/文字代表，也可以纯图标，由用户后续改内容。
+           这里提供示意: 用圆润的emoji或者字母，表示不同子页面入口 */
+        
+        /* SVG 展示区域: 居中留白，框架简洁 */
+        .svg-stage {
+            margin: 2rem 0 1rem;
+            background: #ffffffcc;
+            border-radius: 40px;
+            padding: 1.2rem;
+            box-shadow: inset 0 1px 4px #00000008, 0 6px 12px -6px rgba(0,0,0,0.05);
+            backdrop-filter: blur(4px);
+            transition: all 0.2s;
+        }
+        .svg-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #F8FAFE;
+            border-radius: 28px;
+            padding: 1rem;
+            border: 1px solid #eef2fc;
+        }
+        /* 完全自由的svg框架：设定宽度100%，高度自适应，保持比例 */
+        .framework-svg {
+            width: 100%;
+            height: auto;
+            max-height: 320px;
+            display: block;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+        /* 辅助文案 */
+        .svg-note {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #8c9bb0;
+            margin-top: 0.8rem;
+            letter-spacing: 0.3px;
+        }
+
+        /* 底部优雅装饰 */
+        .footer-note {
+            text-align: center;
+            font-size: 0.7rem;
+            margin-top: 2rem;
+            color: #9eafc7;
+            border-top: 1px solid #e2e9f2;
+            padding-top: 1.5rem;
+        }
+
+        /* 手机优化：确保方块点击区域舒适，间隙微调 */
+        @media (max-width: 550px) {
+            .home-container {
+                padding: 1.5rem 1rem 2rem;
+            }
+            .links-grid {
+                gap: 0.9rem;
+            }
+            .svg-stage {
+                padding: 1rem;
+            }
+            .svg-container {
+                padding: 0.75rem;
+            }
+        }
+
+        /* 大屏幕下方块依然清晰居中 */
+        @media (min-width: 1024px) {
+            .home-container {
+                max-width: 960px;
+            }
+            .links-grid {
+                gap: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="home-container">
+    <!-- 标志区域：王闪闪 + blink.wang -->
+    <div class="brand">
+        <div class="logo-name">王闪闪</div>
+        <div class="logo-domain">blink.wang</div>
+    </div>
+
+    <!-- 链接方块区域：每个方块 64x64，可点击跳转子页面（这里展示示例子页面链接，# 占位，需替换实际地址）
+         由于要求“可以点击链接进入子页面”，提供正确的占位链接，用户可自行修改 href 属性 -->
+    <div class="links-grid">
+        <!-- 方块1 -->
+        <a href="#" class="link-block" target="_self" id="link-sub-1" aria-label="子页面1">
+            <span>✨</span>
+        </a>
+        <!-- 方块2 -->
+        <a href="#" class="link-block" target="_self" id="link-sub-2" aria-label="子页面2">
+            <span>📘</span>
+        </a>
+        <!-- 方块3 -->
+        <a href="#" class="link-block" target="_self" id="link-sub-3" aria-label="子页面3">
+            <span>🎨</span>
+        </a>
+        <!-- 方块4 -->
+        <a href="#" class="link-block" target="_self" id="link-sub-4" aria-label="子页面4">
+            <span>⚡</span>
+        </a>
+        <!-- 方块5（可选，为了丰富，但保持网格不拥挤，增加至5个同样满足64px规范）-->
+        <a href="#" class="link-block" target="_self" id="link-sub-5" aria-label="子页面5">
+            <span>🌟</span>
+        </a>
+    </div>
+
+    <!-- SVG 图片骨架: 只提供框架，用户可自行替换内部任何图形，完全保留svg标签完整性 -->
+    <div class="svg-stage">
+        <div class="svg-container">
+            <svg class="framework-svg" viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg"
+                 aria-label="预留svg图形区域，用户可自定义内容">
+                <!-- 这是一个干净的预留svg框架，不含具体图形内容，仅做轮廓示意。
+                     使用者可以根据需求直接替换内部任何元素，删除或覆盖当前组。
+                     为了清晰标出可编辑区域，添加一个极浅的虚线边界以示范围(可选,不影响填充) -->
+                <rect width="100%" height="100%" fill="transparent" stroke="#DCE5F2" stroke-width="1.5" stroke-dasharray="6 6" rx="16" ry="16" />
+                <!-- 占位文字提示，方便辨识位置，用户可直接删除或覆盖；不视为具体图形内容 -->
+                <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="12" fill="#B9C8E5" font-family="monospace" letter-spacing="1">
+                    ✨ 您的 SVG 内容 ✨
+                </text>
+                <text x="50%" y="62%" dominant-baseline="middle" text-anchor="middle" font-size="10" fill="#C6D4EC" font-family="system-ui">
+                    可替换任意矢量图形
+                </text>
+                <!-- 框架结束，无内置图标/实际图形内容。仅占位示意方便替换 -->
+            </svg>
+        </div>
+        <div class="svg-note">
+            SVG 框架 — 自由绘制你的图形
+        </div>
+    </div>
+
+    <div class="footer-note">
+        ✨ blink.wang · 灵光闪耀
+    </div>
+</div>
+
+<!-- 可选: 让链接方块示例跳转到指定子页面(演示占位, 由用户替换href)。为了避免空链接导致页面刷新，
+     给出友好的控制台提醒，但完全保留跳转功能，用户实际部署时修改即可。
+     同时为了满足"链接方块可以点击进入子页面"规范性，这里并未阻止默认行为，但当前#占位符会在本页无效滚动。
+     为了方便演示点击跳转的实际效果，提供一个简单的示例: 如果链接锚点为#则默认跳转至demo子页面？为避免强制刷新，
+     在开发阶段可提醒。最终交付无侵入，用户自行替换真实子页面地址。同时增加平滑的提醒但保留体验。
+     无额外复杂JavaScript干扰svg框架，保持轻量。-->
+<script>
+    (function() {
+        // 仅用于增强开发体验：如果链接地址是 "#" 或者未修改时，点击时给予控制台友好提示，但不影响用户自行修改href属性。
+        // 由于用户期望点击链接进入真实子页面，我们不强加拦截。但为了避免无意义的页面跳转回顶部，只对未修改的原生占位符（href="#"）做提醒，
+        // 同时依然允许页面不发生跳转打扰体验（因为 # 会滚动到顶部）。为了更友好，如果没有真实url且是空链接，我们可以临时提醒用户可以修改。
+        // 但原则：保留完全可点击能力，不做策略破坏，只做建议。并且不影响手机/电脑自适应，不影响SVG框架。
+        const blocks = document.querySelectorAll('.link-block');
+        blocks.forEach(block => {
+            const originalHref = block.getAttribute('href');
+            // 如果链接是 "#" 或 "javascript:void(0)" 等占位，给出一次提示(console) 但不阻止跳转；
+            // 为了更好的演示效果，且不干扰用户自行修改，我们仅仅在控制台输出建议，同时对于"#"做轻量级拦截防止页面跳动？ 
+            // 不拦截会跳转到顶部，这对体验不好。可添加一个简单的判断，但用户希望"点击链接进入子页面"，无真实子页面时演示跳转应避免错误动作。
+            // 更好做法: 保留默认行为但如果是#我们就触发临时alert告知配置？但这样不够优雅。更专业: 在控制台警告，且如果当前href === "#"，
+            // 动态替换为一个模拟子页面展示？但需求仅要求提供链接方块，提供框架，我方填充实际地址即可。为了展示可点，可以预置演示子页面(about:blank)不太好。
+            // 为了避免页面滚动丢失体验，也为帮助用户初始化，增加一个简单的临时路由模拟功能？违背简单原则。
+            // 最佳方案: 默认展示demo子页面占位 / 子页面示例？多数情况提供demo链接，最稳当。我们可以在本地增加一个简单的子页面展示机制 < 不污染svg。
+            // 但是为了完全符合"点击链接进入子页面"要求，链接必须有效。我们可以动态添加一个基本的数据演示弹窗? 但不能破坏原始主页意图。
+            // 解决思路：提供示例假链接但给弹窗示例？不合适。提供标准的子页面demo?我们可以创建几个简易演示空白页? 但由于是单HTML文件，
+            // 可以使用片段标识符模拟 "子页面"视图？但可能过于复杂。最终为了尊重规范，让链接点击后在新窗口打开示例说明页面？但是用户最后会替换地址，
+            // 为了展示可交互，轻松把占位符改为指向示例 "#subpage-demo" 并滚动到某个隐藏区域? 但那样多余。尽量保持干净: 采用事件监听仅在演示环境中，
+            // 如果链接仍是占位符，设置自定义行为展示内置提示，便于用户明确这些方块需要绑定真实url。但这样拦截了跳转子页面，破坏原本意图?
+            // 更好的: 保持普通链接但href="#"会滚动到顶部，对演示不太舒服，增加preventDefault? 不，用户需要真实跳转。提供一个最小影响:
+            // 如果当前主机名是本地或预览环境，且href 是"#"，我们改成javascript:void 并提供说明，这会破坏。不做改变，完全保留原始标记，
+            // 开发者在实际使用时修改href即可。为了展示点击能感知到方块被点击并反馈友好，我们只添加一个微小控制台日志，帮助开发者知道修改链接地址。
+            if (originalHref === '#' || originalHref === '') {
+                block.addEventListener('click', function(e) {
+                    console.warn('【王闪闪主页】链接方块尚未设置真实子页面URL，请修改 href 属性指向子页面 (例如 "sub.html" 或 "/about")');
+                    // 为了尽量保留demo可点又不至于页面跳到顶部/刷新，可以简单提示并阻止默认行为? 但是用户看到提示后就知道要替换真实链接。
+                    // 同时体验未丢失，不会强制跳转导致页面锚点。且保证了点击方块进入子页面（待替换）。本方仅提供框架。
+                    // 但注意：要求必须能点击进入子页面，所以必须保证有真实跳转；在未修改的情况下我们可以协助友好提醒但不跳转，确保用户修改后正常运行。
+                    // 但实际上该段逻辑不应该干扰最终用户替换后行为。为了避免误会, 仅在href未改且为占位符时做提示并阻止页面抖动。
+                    e.preventDefault();
+                    alert('✨ 提示：请将链接方块的地址改为您的子页面URL (例如 "page1.html")，当前为占位符。点击确定继续编辑~');
+                });
+            }
+        });
+        // 额外小细节：为svg保留完全自定义入口，不注入任何图形内容，确保框架纯净。
+    })();
+</script>
+</body>
+</html>
